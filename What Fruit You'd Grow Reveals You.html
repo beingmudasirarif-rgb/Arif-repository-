@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quirk & Core Personality Quiz</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f5faff; padding: 20px; text-align: center; }
+    h2 { color: #333; }
+    .question { margin: 20px 0; font-weight: bold; }
+    .option { background: #d7eafc; margin: 5px; padding: 10px; border-radius: 8px; cursor: pointer; }
+    .option:hover { background: #a3d2fc; }
+    #result { font-size: 1.2em; margin-top: 30px; }
+    #start-btn, #share-btn { padding: 10px 20px; font-size: 1em; cursor: pointer; background: #89c9fc; border: none; border-radius: 5px; margin-top: 15px; }
+  </style>
+</head>
+<body>
+
+  <h2>🌀 Quirk & Core Survey</h2>
+  <div id="quiz-container"></div>
+  <button id="start-btn" onclick="startQuiz()">Start Quiz</button>
+  <a id="share-btn" style="display:none;" target="_blank">Share on WhatsApp</a>
+
+  <script>
+    const questions = [
+      { text: "If your thoughts were audible for one day, what time would you go silent?", options: ["Morning", "Afternoon", "Evening", "Never"], trait: "introspection" },
+      { text: "Which color would you ban from existence and why?", options: ["Red", "Blue", "Yellow", "Green"], trait: "aesthetics" },
+      { text: "You find a door labeled 'Do Not Open.' What do you do?", options: ["Open it immediately", "Walk away", "Peek through the keyhole", "Knock first"], trait: "curiosity" },
+      { text: "Would you rather hug a cactus or give a speech to thousands?", options: ["Hug a cactus", "Give a speech", "Do both", "Do neither"], trait: "comfortZone" },
+      { text: "What do you think your shadow says about you?", options: ["You’ve got depth", "You're mysterious", "Please stop skipping sunshine", "You’re always behind"], trait: "selfImage" },
+      { text: "If you could only communicate through one sound, what would it be?", options: ["Laughter", "A whistle", "A hum", "A clap"], trait: "expression" },
+      { text: "If you were a tree, what kind of fruit would you grow?", options: ["Apples", "Oranges", "Bananas", "None, just shade"], trait: "contribution" },
+      { text: "What would you name a planet you discovered?", options: ["Solitude", "Harmony", "Chaos", "Wonder"], trait: "worldview" },
+      { text: "If you could only keep one sense, which would it be?", options: ["Sight", "Hearing", "Touch", "Smell"], trait: "perception" },
+      { text: "What shape best represents your personality?", options: ["Circle", "Square", "Triangle", "Spiral"], trait: "depth" }
+    ];
+
+    let current = 0;
+    let traits = {};
+
+    function startQuiz() {
+      document.getElementById("start-btn").style.display = "none";
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      if (current >= questions.length) {
+        showResults();
+        return;
+      }
+
+      const q = questions[current];
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = `<div class="question">${q.text}</div>` +
+        q.options.map(opt => `<div class="option" onclick="selectOption('${q.trait}')">${opt}</div>`).join('');
+    }
+
+    function selectOption(trait) {
+      traits[trait] = (traits[trait] || 0) + 1;
+      current++;
+      loadQuestion();
+    }
+
+    function showResults() {
+      let dominantTrait = Object.entries(traits).sort((a, b) => b[1] - a[1])[0][0];
+      let resultMessage = "";
+
+      switch (dominantTrait) {
+        case "introspection":
+          resultMessage = "You're an introspective wonder—like a silent lake reflecting stars. 🧘‍♂️";
+          break;
+        case "curiosity":
+          resultMessage = "Curious as a cat in a labyrinth. You chase mystery for the thrill! 🕵️‍♀️";
+          break;
+        case "expression":
+          resultMessage = "Your presence is a symphony—every note says something profound. 🎵";
+          break;
+        case "comfortZone":
+          resultMessage = "You either break comfort zones—or build new ones with cacti. 🌵🎤";
+          break;
+        case "worldview":
+          resultMessage = "You think in galaxies—naming stars based on your heart's rhythm. 🌌";
+          break;
+        default:
+          resultMessage = "You're a mosaic of unique traits—no label fits you quite right. 🧩";
+      }
+
+      const finalMessage = `${resultMessage}\n\n— beingmudasirarif`;
+
+      document.getElementById("quiz-container").innerHTML = `<div id="result">${resultMessage}<br><br><em>— beingmudasirarif</em></div>`;
+
+      const shareLink = `https://wa.me/?text=${encodeURIComponent("I just took the Quirk & Core quiz!\n\n" + finalMessage + "\n\nTry it: [your-link-here]")}`;
+      const shareBtn = document.getElementById("share-btn");
+      shareBtn.href = shareLink;
+      shareBtn.style.display = "inline-block";
+    }
+  </script>
+
+  <footer style="margin-top: 40px; font-style: italic; color: #555;">
+    — Created with insight and quirk by <strong>Mudasir</strong>
+  </footer>
+
+</body>
+</html>
